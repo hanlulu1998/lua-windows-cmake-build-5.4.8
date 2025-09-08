@@ -1,17 +1,14 @@
 @echo off
 setlocal
 
-REM ?????????????
 if "%~1"=="" (
     echo [ERROR] Please provide an install directory as an argument!
     echo Usage: %~nx0 C:\path\to\install
     exit /b 1
 )
 
-REM ??????
 set INSTALL_PREFIX=%~1
 
-REM ?? build ?????????
 if not exist build (
     mkdir build
 )else (
@@ -22,7 +19,6 @@ if not exist build (
 
 cd build
 
-REM ?? CMake ??
 echo [INFO] Running CMake configuration...
 cmake .. -DCMAKE_INSTALL_PREFIX="%INSTALL_PREFIX%"
 if errorlevel 1 (
@@ -30,7 +26,6 @@ if errorlevel 1 (
     exit /b 1
 )
 
-REM ????
 echo [INFO] Building project...
 cmake --build . --config Release
 if errorlevel 1 (
@@ -38,12 +33,16 @@ if errorlevel 1 (
     exit /b 1
 )
 
-REM ????
 echo [INFO] Installing project...
 cmake --install .
 if errorlevel 1 (
     echo [ERROR] Installation failed!
     exit /b 1
+)
+
+if exist "%INSTALL_PREFIX%\lib\lua.dll" (
+    echo -- Copying: "%INSTALL_PREFIX%\lib\lua.dll -> %INSTALL_PREFIX%\bin\"
+    copy /Y "%INSTALL_PREFIX%\lib\lua.dll" "%INSTALL_PREFIX%\bin\"
 )
 
 echo [SUCCESS] Build and installation completed! Installed to: %INSTALL_PREFIX%
