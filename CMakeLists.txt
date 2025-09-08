@@ -3,6 +3,7 @@ project(lua LANGUAGES C)
 
 option(LUA_USE_C89 "Use only C89 features." OFF)
 option(LUA_COMPAT_5_3 "Enable backwards compatibility options with lua-5.3." ON)
+option(BUILD_SHARED_LIBS "Enable creating shared libraries." OFF)
 
 set(INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
 set(INSTALL_BIN ${INSTALL_DIR}/bin)
@@ -37,7 +38,6 @@ include_directories(src ${CMAKE_CURRENT_BINARY_DIR})
 
 file(GLOB SRC_LIB src/*.c)
 list(REMOVE_ITEM SRC_LIB "${CMAKE_CURRENT_SOURCE_DIR}/src/lua.c")
-
 
 add_library(liblua ${SRC_LIB})
 set_target_properties(liblua PROPERTIES OUTPUT_NAME lua)
